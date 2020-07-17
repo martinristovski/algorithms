@@ -69,21 +69,26 @@ class Square:
         self.color = PATH_COLOR
 
     def draw(self, window):
-        pygame.draw.rect(WINDOW, self.color, (self.x, self.y, self.size, self.size))
+        pygame.draw.rect(WINDOW, self.color,
+            (self.x, self.y, self.size, self.size))
 
     def update_neighbors(self, grid):
         self.neighbors = []
 
-        if self.row < self.total_rows - 1 and not grid[self.row + 1][self.col].is_barrier(): # down
+        if (self.row < self.total_rows - 1 and 
+            not grid[self.row + 1][self.col].is_barrier()): # down
             self.neighbors.append(grid[self.row + 1][self.col])
 
-        if self.row > 0 and not grid[self.row - 1][self.col].is_barrier(): # up
+        if (self.row > 0 and 
+            not grid[self.row - 1][self.col].is_barrier()): # up
             self.neighbors.append(grid[self.row - 1][self.col])
 
-        if self.col < self.total_rows - 1 and not grid[self.row][self.col + 1].is_barrier(): # right
+        if (self.col < self.total_rows - 1 and 
+            not grid[self.row][self.col + 1].is_barrier()): # right
             self.neighbors.append(grid[self.row][self.col + 1])
 
-        if self.col > 0 and not grid[self.row][self.col - 1].is_barrier(): # left
+        if (self.col > 0 and 
+            not grid[self.row][self.col - 1].is_barrier()): # left
             self.neighbors.append(grid[self.row][self.col - 1])
 
     def __lt__(self, other):
@@ -136,7 +141,8 @@ def algorithm(draw, grid, start, end):
             if temp_g_score < g_score[neighbor]:
                 origin[neighbor] = current
                 g_score[neighbor] = temp_g_score
-                f_score[neighbor] = temp_g_score + heuristic(neighbor.get_position(), end.get_position())
+                f_score[neighbor] = (temp_g_score + 
+                    heuristic(neighbor.get_position(), end.get_position()))
 
                 if neighbor not in open_set_hash:
                     count += 1
@@ -168,9 +174,9 @@ def draw_grid(window, rows, size):
     gap = size // rows
 
     for i in range(rows):
-        pygame.draw.line(window, BARRIER_COLOR, (0, i * gap), (size, i*gap))
+        pygame.draw.line(window, BARRIER_COLOR, (0, i*gap), (size, i*gap))
         for j in range(rows):
-            pygame.draw.line(window, BARRIER_COLOR, (j * gap, 0), (j * gap, size))
+            pygame.draw.line(window, BARRIER_COLOR, (j*gap, 0), (j*gap, size))
 
 def draw(window, grid, rows, size):
     window.fill(EMPTY_COLOR)
@@ -240,7 +246,8 @@ def main(window, size):
                         for square in row:
                             square.update_neighbors(grid)
                     
-                    algorithm(lambda: draw(WINDOW, grid, ROWS, size), grid, start, end)
+                    algorithm(lambda: draw(WINDOW, grid, ROWS, size), 
+                        grid, start, end)
 
                 if event.key == pygame.K_c:
                     start = None
